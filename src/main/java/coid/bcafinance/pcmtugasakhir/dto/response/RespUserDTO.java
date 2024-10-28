@@ -8,6 +8,33 @@ public class RespUserDTO {
     private String username;
     private String email;
     private String noHp;
+    private String alamat;
+    private Integer umur;
+    private String namaLengkap;
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public Integer getUmur() {
+        return umur;
+    }
+
+    public void setUmur(Integer umur) {
+        this.umur = umur;
+    }
+
+    public String getNamaLengkap() {
+        return namaLengkap;
+    }
+
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
 
     public Long getId() {
         return id;

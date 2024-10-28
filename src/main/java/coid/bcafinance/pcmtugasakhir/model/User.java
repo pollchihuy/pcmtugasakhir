@@ -79,7 +79,7 @@ public class User {
 
     public Integer getUmur() {
         return Period.
-                between(LocalDate.now(), tanggalLahir).getYears();
+                between(tanggalLahir,LocalDate.now()).getYears();
     }
 
     public void setUmur(Integer umur) {
