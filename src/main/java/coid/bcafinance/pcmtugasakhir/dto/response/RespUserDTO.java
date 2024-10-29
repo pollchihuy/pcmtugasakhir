@@ -1,6 +1,8 @@
 package coid.bcafinance.pcmtugasakhir.dto.response;
 
 
+import coid.bcafinance.pcmtugasakhir.model.Akses;
+
 import java.util.Date;
 
 public class RespUserDTO {
@@ -11,6 +13,15 @@ public class RespUserDTO {
     private String alamat;
     private Integer umur;
     private String namaLengkap;
+    private RespAksesDTO akses;
+
+    public RespAksesDTO getAkses() {
+        return akses;
+    }
+
+    public void setAkses(RespAksesDTO akses) {
+        this.akses = akses;
+    }
 
     public String getAlamat() {
         return alamat;

@@ -41,9 +41,21 @@ public class User {
     private Integer umur;
     @Column(name = "Alamat")
     private String alamat;//length default 255
-    @Column(name = "NamaLengkap", length = 50)
+    @Column(name = "NamaLengkap", length = 50,columnDefinition = "default current_timestamp")
     private String namaLengkap;
 
+
+    @ManyToOne
+    @JoinColumn(name = "IDAccess", foreignKey = @ForeignKey(name = "fk-to-akses"))
+    private Akses akses;
+
+    public Akses getAkses() {
+        return akses;
+    }
+
+    public void setAkses(Akses akses) {
+        this.akses = akses;
+    }
 
     public String getAlamat() {
         return alamat;
