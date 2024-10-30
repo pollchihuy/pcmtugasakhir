@@ -37,6 +37,7 @@ public interface UserRepo extends JpaRepository<User,Long> {
     List<User> findByNoHpContainingIgnoreCase(String value);
 //    List<User> findByNoHpContainingIgnoreCaseAAndCreatedAtBetween(String value,String dateAwal, String dateAkhir);
 
+    /** INI DIRUBAH SAAT MIGRASI */
     @Query(value = "SELECT  x FROM User x WHERE CAST(DATEDIFF(year ,CURRENT_TIMESTAMP ,x.tanggalLahir) AS STRING ) LIKE CONCAT('%',?1,'%') ")
     List<User> cariUmur(String value);
     

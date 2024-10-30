@@ -70,6 +70,7 @@ public class AksesService implements IService<Akses>, IFile<Akses> {
             }
             Akses aksesNext = optionalAkses.get();
             aksesNext.setNamaAkses(akses.getNamaAkses());
+            aksesNext.setMenuList(akses.getMenuList());
             aksesNext.setModifiedBy(1L);
         }catch (Exception e) {
             return GlobalFunction.dataGagalDisimpan("FEAUT003011",request);//011-020

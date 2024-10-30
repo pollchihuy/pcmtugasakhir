@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "MstAkses")
@@ -27,6 +28,23 @@ public class Akses {
     @Column(name = "ModifiedAt")
     @UpdateTimestamp
     private Date modifiedAt;
+
+    @ManyToMany
+    @JoinTable(name = "MapAksesMenu",
+            uniqueConstraints = {
+            @UniqueConstraint(name = "unique-akses-menu",
+                    columnNames = { "IDAkses", "IDMenu" }) },
+            joinColumns = @JoinColumn(name = "IDAkses",foreignKey = @ForeignKey(name = "fk_to_map_akses")),
+            inverseJoinColumns =@JoinColumn(name = "IDMenu", foreignKey =@ForeignKey(name = "fk_to_map_menu")))
+    private List<Menu> menuList;
+
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
+    }
 
     public Long getId() {
         return id;

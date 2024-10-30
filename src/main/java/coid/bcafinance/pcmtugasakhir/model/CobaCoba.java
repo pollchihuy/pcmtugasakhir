@@ -1,6 +1,7 @@
 package coid.bcafinance.pcmtugasakhir.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -9,7 +10,10 @@ public class CobaCoba {
 
     @Id
     private Long id;
-    private String nama;
+
+    /** INI DIUBAH SAAT MIGRASI */
+    @Column(columnDefinition = "default current_timestamp")
+    private String nama="Paul";
     private String alamat;
 
 }

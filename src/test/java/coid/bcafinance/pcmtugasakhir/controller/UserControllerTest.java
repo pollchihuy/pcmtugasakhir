@@ -1,6 +1,8 @@
 package coid.bcafinance.pcmtugasakhir.controller;
 
+import coid.bcafinance.pcmtugasakhir.model.Akses;
 import coid.bcafinance.pcmtugasakhir.model.User;
+import coid.bcafinance.pcmtugasakhir.repo.AksesRepo;
 import coid.bcafinance.pcmtugasakhir.repo.UserRepo;
 import coid.bcafinance.pcmtugasakhir.utils.DataGenerator;
 import io.restassured.RestAssured;
@@ -15,7 +17,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,6 +24,9 @@ import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class UserControllerTest extends AbstractTestNGSpringContextTests {
+
+    @Autowired
+    private AksesRepo aksesRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -40,6 +44,8 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         req = new JSONObject();
         Optional<User> optionalUser= userRepo.findTopByOrderByIdDesc();
         user = optionalUser.get();
+//        List<Akses> aksesList = aksesRepo.findAll();
+//        Long [] longArr =
     }
 
     @Test(priority = 3)
@@ -51,6 +57,16 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         req.put("tanggal-lahir",dataGenerator.dataTanggalLahir());
         req.put("alamat",dataGenerator.dataAlamat());
         req.put("nama-lengkap",dataGenerator.dataNamaLengkap());
+        Akses akses = new Akses();
+        akses.setId(1L);
+//        List<Menu> l = new ArrayList<>()
+//                Menu m = new Menu();
+//        m.setId(1L);
+//                l.add(m);
+//                1,2,3,4,5,6,7,8,9,10
+//                        5
+
+        req.put("akses",akses);
 
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").

@@ -44,7 +44,6 @@ public class User {
     @Column(name = "NamaLengkap", length = 50,columnDefinition = "default current_timestamp")
     private String namaLengkap;
 
-
     @ManyToOne
     @JoinColumn(name = "IDAccess", foreignKey = @ForeignKey(name = "fk-to-akses"))
     private Akses akses;

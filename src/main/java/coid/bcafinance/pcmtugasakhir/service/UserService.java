@@ -78,6 +78,7 @@ public class UserService implements IService<User>, IFile<User> {
             userNext.setNamaLengkap(user.getNamaLengkap());
             userNext.setNoHp(user.getNoHp());
             userNext.setUsername(user.getUsername());
+            userNext.setAkses(user.getAkses());
             userNext.setModifiedBy(1L);
         }catch (Exception e) {
             return GlobalFunction.dataGagalDisimpan("FEAUT004011",request);//011-020

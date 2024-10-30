@@ -1,7 +1,9 @@
 package coid.bcafinance.pcmtugasakhir.controller;
 
 import coid.bcafinance.pcmtugasakhir.model.Akses;
+import coid.bcafinance.pcmtugasakhir.model.Menu;
 import coid.bcafinance.pcmtugasakhir.repo.AksesRepo;
+import coid.bcafinance.pcmtugasakhir.repo.MenuRepo;
 import coid.bcafinance.pcmtugasakhir.utils.DataGenerator;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
@@ -16,6 +18,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -27,25 +30,29 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private AksesRepo aksesRepo;
 
+    @Autowired
+    private MenuRepo menuRepo;
+
     private Random rand;
     private DataGenerator dataGenerator;
     private JSONObject req;
     private Akses akses;
-
+    private List<Menu> list;
     @BeforeClass
     private void setUp(){
         RestAssured.baseURI = "http://localhost:8080";
         rand = new Random();
         dataGenerator = new DataGenerator();
         req = new JSONObject();
-//        Optional<Akses> optionalAkses= aksesRepo.findTopByOrderByIdDesc();
-//        akses = optionalAkses.get();
+        Optional<Akses> optionalAkses= aksesRepo.findTopByOrderByIdDesc();
+        akses = optionalAkses.get();
+        list = menuRepo.findAll();
     }
 
     @Test(priority = 3)
     private void save(){
-        req.put("nama-akses",dataGenerator.dataNamaLengkap());
-
+        req.put("nama-akses",dataGenerator.dataNamaTim());
+        req.put("menu-list",list);
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
@@ -53,6 +60,45 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
 
         String pathVariable = "/akses";
         Response response = httpRequest.request(Method.POST, pathVariable);
+        JsonPath jPath = response.jsonPath();
+        ResponseBody responseBody = response.getBody();// seluruh body dari response
+        System.out.println("====================================START RESPONSE BODY =================================================");
+        System.out.println(responseBody.asPrettyString());// untuk melihat isi dari response body dalam bentuk JSON
+    }
+
+    @Test(priority = 7)
+    private void update(){
+        req.put("nama-akses",dataGenerator.dataNamaTim());
+//        list.remove(list.size()-2);
+        list.remove(list.size()-1);
+        req.put("menu-list",list);
+        RequestSpecification httpRequest = given().
+                header("Content-Type","application/json").
+                header("Accept","*/*").
+                body(req);
+
+        String pathVariable = "/akses/"+akses.getId();
+        Response response = httpRequest.request(Method.PUT, pathVariable);
+        JsonPath jPath = response.jsonPath();
+        ResponseBody responseBody = response.getBody();// seluruh body dari response
+        System.out.println("====================================START RESPONSE BODY =================================================");
+        System.out.println(responseBody.asPrettyString());// untuk melihat isi dari response body dalam bentuk JSON
+    }
+
+    @Test(priority = 10)
+    private void delete(){
+//        req.put("nama-akses",dataGenerator.dataNamaTim());
+//        list.remove(list.size()-2);
+//        list.remove(list.size()-1);
+//        req.put("menu-list",list);
+        System.out.println("AKSES "+akses.getId());
+        RequestSpecification httpRequest = given().
+                header("Content-Type","application/json").
+                header("Accept","*/*").
+                body(req);
+
+        String pathVariable = "/akses/"+akses.getId();
+        Response response = httpRequest.request(Method.DELETE, pathVariable);
         JsonPath jPath = response.jsonPath();
         ResponseBody responseBody = response.getBody();// seluruh body dari response
         System.out.println("====================================START RESPONSE BODY =================================================");
