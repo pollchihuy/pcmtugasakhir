@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+
 import java.util.Optional;
 import java.util.Random;
 
@@ -44,8 +45,6 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         req = new JSONObject();
         Optional<User> optionalUser= userRepo.findTopByOrderByIdDesc();
         user = optionalUser.get();
-//        List<Akses> aksesList = aksesRepo.findAll();
-//        Long [] longArr =
     }
 
     @Test(priority = 3)
@@ -59,13 +58,6 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         req.put("nama-lengkap",dataGenerator.dataNamaLengkap());
         Akses akses = new Akses();
         akses.setId(1L);
-//        List<Menu> l = new ArrayList<>()
-//                Menu m = new Menu();
-//        m.setId(1L);
-//                l.add(m);
-//                1,2,3,4,5,6,7,8,9,10
-//                        5
-
         req.put("akses",akses);
 
         RequestSpecification httpRequest = given().
@@ -75,6 +67,46 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
 
         String pathVariable = "/user";
         Response response = httpRequest.request(Method.POST, pathVariable);
+        JsonPath jPath = response.jsonPath();
+        ResponseBody responseBody = response.getBody();// seluruh body dari response
+        System.out.println("====================================START RESPONSE BODY =================================================");
+        System.out.println(responseBody.asPrettyString());// untuk melihat isi dari response body dalam bentuk JSON
+    }
+
+    @Test(priority = 7)
+    private void update(){
+        req.put("username",dataGenerator.dataUsername());
+        req.put("email",dataGenerator.dataEmail());
+        req.put("no-hp",dataGenerator.dataNoHp());
+        req.put("password",dataGenerator.dataPassword());
+        req.put("tanggal-lahir",dataGenerator.dataTanggalLahir());
+        req.put("alamat",dataGenerator.dataAlamat());
+        req.put("nama-lengkap",dataGenerator.dataNamaLengkap());
+        Akses akses = new Akses();
+        akses.setId(1L);
+        req.put("akses",akses);
+
+        RequestSpecification httpRequest = given().
+                header("Content-Type","application/json").
+                header("Accept","*/*").
+                body(req);
+
+        String pathVariable = "/user/"+user.getId();
+        Response response = httpRequest.request(Method.PUT, pathVariable);
+        JsonPath jPath = response.jsonPath();
+        ResponseBody responseBody = response.getBody();// seluruh body dari response
+        System.out.println("====================================START RESPONSE BODY =================================================");
+        System.out.println(responseBody.asPrettyString());// untuk melihat isi dari response body dalam bentuk JSON
+    }
+
+    @Test(priority = 10)
+    private void delete(){
+        RequestSpecification httpRequest = given().
+                header("Content-Type","application/json").
+                header("Accept","*/*");
+
+        String pathVariable = "/user/"+user.getId();
+        Response response = httpRequest.request(Method.DELETE, pathVariable);
         JsonPath jPath = response.jsonPath();
         ResponseBody responseBody = response.getBody();// seluruh body dari response
         System.out.println("====================================START RESPONSE BODY =================================================");

@@ -1,5 +1,6 @@
 package coid.bcafinance.pcmtugasakhir.dto.validasi;
 
+import coid.bcafinance.pcmtugasakhir.model.Akses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -31,8 +32,8 @@ public class ValUserDTO {
     @NotNull
     @NotBlank
     @NotEmpty
-    @Pattern(regexp = "^(62|\\+62|0)8[0-9]{9,11}$",
-            message = "Format No HP Tidak Valid , min 9 max 11 setelah angka 8, contoh : (0/62/+62)81111111")
+    @Pattern(regexp = "^(62|\\+62|0)8[0-9]{9,13}$",
+            message = "Format No HP Tidak Valid , min 9 max 13 setelah angka 8, contoh : (0/62/+62)81111111")
     @JsonProperty("no-hp")
     private String noHp;
 
@@ -65,6 +66,17 @@ public class ValUserDTO {
             message = "Format Nama Tidak Valid , contoh : Paul Christian")
     @JsonProperty("nama-lengkap")
     private String namaLengkap;
+
+//    @NotNull
+    private Akses akses;
+
+    public Akses getAkses() {
+        return akses;
+    }
+
+    public void setAkses(Akses akses) {
+        this.akses = akses;
+    }
 
     public String getUsername() {
         return username;

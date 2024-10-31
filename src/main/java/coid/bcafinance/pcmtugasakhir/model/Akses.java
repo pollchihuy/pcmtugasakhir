@@ -22,9 +22,11 @@ public class Akses {
     @Column(name = "CreatedBy",updatable=false,nullable=false)
     private Long createdBy=1L;
     @CreationTimestamp
+    @Column(name = "CreatedAt")
     private Date createdAt;
     @Column(name = "ModifiedBy",insertable = false)
     private Long modifiedBy;
+    
     @Column(name = "ModifiedAt")
     @UpdateTimestamp
     private Date modifiedAt;

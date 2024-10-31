@@ -7,8 +7,8 @@ import coid.bcafinance.pcmtugasakhir.dto.response.RespUserDTO;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValLoginDTO;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValUserDTO;
 import coid.bcafinance.pcmtugasakhir.model.User;
-import coid.bcafinance.pcmtugasakhir.repo.CobaCobaRepo;
 import coid.bcafinance.pcmtugasakhir.repo.UserRepo;
+import coid.bcafinance.pcmtugasakhir.security.BcryptImpl;
 import coid.bcafinance.pcmtugasakhir.util.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,9 +40,6 @@ public class UserService implements IService<User>, IFile<User> {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private CobaCobaRepo cobaCobaRepo;
-
     private TransformPagination transformPagination = new TransformPagination();
     private ModelMapper modelMapper = new ModelMapper();
     private StringBuilder sBuild = new StringBuilder();
@@ -56,8 +53,11 @@ public class UserService implements IService<User>, IFile<User> {
     @Override
     public ResponseEntity<Object> save(User user,HttpServletRequest request) {
         try{
+            //$2a$11$.HryliSpcSd/8Ml3nOSwI.KAMXle9Vfn9JcVrzghOpSRR7AHGEnNu
+            user.setPassword(BcryptImpl.hash(user.getPassword()+user.getUsername()));
             userRepo.save(user);
         }catch (Exception e) {
+            System.out.println("error"+e.getMessage());
             return GlobalFunction.dataGagalDisimpan("FEAUT004001",request);
         }
         return GlobalFunction.dataBerhasilDisimpan(request);
@@ -103,7 +103,19 @@ public class UserService implements IService<User>, IFile<User> {
 
     @Override
     public ResponseEntity<Object> findAll(Pageable pageable, HttpServletRequest request) {
-        return null;
+        Page<User> page = null;
+        List<User> list = null;
+        page=userRepo.findAll(pageable);
+        list = page.getContent();
+        if (list.isEmpty()){
+            return GlobalFunction.dataTidakDitemukan(request);
+        }
+        return transformPagination.transformObject(
+                new HashMap<>(),
+                convertToListRespUserDTO(list),
+                page,
+                null,null
+        );
     }
 
     @Override

@@ -13,9 +13,11 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 8)
+    @Column(length = 20,name = "Nama",nullable = false,unique = true)
     private String nama;
-    private String path;// /akses
+
+    @Column(length = 30,name = "Path",nullable = false,unique = true)
+    private String path;
 
     @ManyToMany(mappedBy = "menuList")
     private List<Akses> aksesList;

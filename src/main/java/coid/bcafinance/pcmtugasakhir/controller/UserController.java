@@ -2,13 +2,14 @@ package coid.bcafinance.pcmtugasakhir.controller;
 
 
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValUserDTO;
+import coid.bcafinance.pcmtugasakhir.model.User;
 import coid.bcafinance.pcmtugasakhir.repo.UserRepo;
+import coid.bcafinance.pcmtugasakhir.security.BcryptImpl;
 import coid.bcafinance.pcmtugasakhir.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("user")
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     private Map<String,Object> map = new HashMap<>();
 
@@ -40,6 +45,18 @@ public class UserController {
         map.put("nama","namaLengkap");
         map.put("age","umur");
     }
+
+    @GetMapping("/pwd/{id}")
+    public Boolean testPassword(@PathVariable(value = "id") Long id,
+            @RequestParam(value = "password") String password
+            ,HttpServletRequest request){
+        Optional<User> optionalUser = userRepo.findById(id);
+        User u = optionalUser.get();
+        String strHash = u.getPassword();
+        System.out.println("STR HASH: "+strHash);
+        Boolean b = BcryptImpl.verifyHash(password, strHash);
+        return b;
+    }
 //    @GetMapping("/hello")
 //    public Map<String,Object> getHello(){
 //        Map<String,Object> m = new HashMap<String, Object>();
@@ -49,8 +66,9 @@ public class UserController {
 //    }
 
     @GetMapping
-    public ResponseEntity<Object> getDefault(){
-        return null;//
+    public ResponseEntity<Object> getDefault(HttpServletRequest request){
+        Pageable pageable =  PageRequest.of(0,10,Sort.by("id"));//ASC
+        return userService.findAll(pageable,request);
     }
 
     /** Usman Save */
@@ -91,7 +109,6 @@ public class UserController {
             HttpServletRequest request
     ){
         Pageable pageable = null;
-        System.out.println("VALUE : "+map.get(column));
         sortBy = map.get(sortBy)==null?"id":map.get(sortBy).toString();
         column = map.get(column)==null?"id":map.get(column).toString();
         if("asc".equals(sort)){
@@ -99,10 +116,6 @@ public class UserController {
         }else{
             pageable = PageRequest.of(page,size,Sort.by(sortBy).descending());//DESC
         }
-//        Pageable pageable = PageRequest.of(page,size,Sort.by(column).descending());//ASC
-//                sort.equals("desc")? Sort.by(objSortBy.toString()).descending():Sort.by(sortBy));
-//        Pageable pageable = PageRequest.of(,
-//                sort.equals("desc")? Sort.by(objSortBy.toString()).descending():Sort.by(sortBy));
         return userService.findByParam(pageable,column,value,request);
     }
 
@@ -136,7 +149,6 @@ public class UserController {
         column = map.get(column)==null?"id":map.get(column).toString();
         userService.generateToPDF(column,value,request,response);
     }
-
     /**
      * nama
      * email
@@ -144,6 +156,5 @@ public class UserController {
      * noHp
      *
      */
-
 
 }

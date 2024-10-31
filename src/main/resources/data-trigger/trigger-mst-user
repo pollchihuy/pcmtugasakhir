@@ -1,0 +1,28 @@
+DROP TRIGGER IF EXISTS cobaan.trgInsertUser;
+GO
+CREATE TRIGGER cobaan.trgInsertUser
+ON cobaan.MstUser
+FOR INSERT
+AS
+    INSERT INTO cobaan.LogUser(ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,CreatedAt,flag)
+    SELECT ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,GETDATE(),'I' FROM INSERTED; --virtual table INSERTED
+GO
+
+DROP TRIGGER IF EXISTS cobaan.trgUpdateUser;
+GO
+CREATE TRIGGER cobaan.trgUpdateUser
+ON cobaan.MstUser
+FOR UPDATE
+AS
+    INSERT INTO cobaan.LogUser(ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,CreatedAt,flag)
+    SELECT ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,GETDATE(),'U' FROM DELETED; --virtual table INSERTED
+
+GO
+DROP TRIGGER IF EXISTS cobaan.trgDeleteUser;
+GO
+CREATE TRIGGER cobaan.trgDeleteUser
+ON cobaan.MstUser
+FOR DELETE
+AS
+    INSERT INTO cobaan.LogUser(ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,CreatedAt,flag)
+    SELECT ID,Alamat,Email,NamaLengkap,NoHp,Password,TanggalLahir,Username,IDAccess,CreatedBy,GETDATE(),'D' FROM DELETED; --virtual table INSERTED

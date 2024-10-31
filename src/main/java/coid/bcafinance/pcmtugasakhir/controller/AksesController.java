@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,9 @@ public class AksesController {
     @Autowired
     private AksesService aksesService;
 
+    
+//    @Value("${server.port}")
+//    private int port;
     private Map<String,Object> map = new HashMap<>();
 
     public AksesController() {
@@ -37,8 +41,9 @@ public class AksesController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getDefault(){
-        return null;//
+    public ResponseEntity<Object> getDefault(HttpServletRequest request){
+        Pageable pageable =  PageRequest.of(0,10,Sort.by("id"));//ASC
+        return aksesService.findAll(pageable,request);
     }
 
     /** Usman Save */
@@ -97,7 +102,6 @@ public class AksesController {
     ){
         return aksesService.uploadDataExcel(file,request);
     }
-
 
     @GetMapping("/download-sheet")
     public void downloadExcel(

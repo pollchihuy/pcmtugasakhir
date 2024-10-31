@@ -20,7 +20,7 @@ public class User {
     /** GANTI SAAT MIGRASI */
     @Column(name="Email",unique=true,length=50)
     private String email;
-    @Column(name="NoHp",unique=true,length=13)//+62
+    @Column(name="NoHp",unique=true,length=20)//+62
     private String noHp;
     @Column(name="Password",length=64)
     private String password;
@@ -41,7 +41,7 @@ public class User {
     private Integer umur;
     @Column(name = "Alamat")
     private String alamat;//length default 255
-    @Column(name = "NamaLengkap", length = 50,columnDefinition = "default current_timestamp")
+    @Column(name = "NamaLengkap", length = 50)
     private String namaLengkap;
 
     @ManyToOne
