@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +67,7 @@ public class UserController {
 //    }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER-MAN')")
     public ResponseEntity<Object> getDefault(HttpServletRequest request){
         Pageable pageable =  PageRequest.of(0,10,Sort.by("id"));//ASC
         return userService.findAll(pageable,request);

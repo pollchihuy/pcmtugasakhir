@@ -7,6 +7,7 @@ import coid.bcafinance.pcmtugasakhir.dto.response.RespAksesDTO;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValLoginDTO;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValAksesDTO;
 import coid.bcafinance.pcmtugasakhir.model.Akses;
+import coid.bcafinance.pcmtugasakhir.model.User;
 import coid.bcafinance.pcmtugasakhir.repo.AksesRepo;
 import coid.bcafinance.pcmtugasakhir.util.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +55,7 @@ public class AksesService implements IService<Akses>, IFile<Akses> {
         try{
             aksesRepo.save(akses);
         }catch (Exception e) {
+            GlobalFunction.println(e.getMessage());
             return GlobalFunction.dataGagalDisimpan("FEAUT003001",request);
         }
         return GlobalFunction.dataBerhasilDisimpan(request);
@@ -94,7 +96,19 @@ public class AksesService implements IService<Akses>, IFile<Akses> {
 
     @Override
     public ResponseEntity<Object> findAll(Pageable pageable, HttpServletRequest request) {
-        return null;
+        Page<Akses> page = null;
+        List<Akses> list = null;
+        page=aksesRepo.findAll(pageable);
+        list = page.getContent();
+        if (list.isEmpty()){
+            return GlobalFunction.dataTidakDitemukan(request);
+        }
+        return transformPagination.transformObject(
+                new HashMap<>(),
+                convertToListRespAksesDTO(list),
+                page,
+                null,null
+        );
     }
 
     @Override

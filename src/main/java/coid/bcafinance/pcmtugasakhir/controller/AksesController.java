@@ -1,6 +1,7 @@
 package coid.bcafinance.pcmtugasakhir.controller;
 
 
+import coid.bcafinance.pcmtugasakhir.config.OtherConfig;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValAksesDTO;
 import coid.bcafinance.pcmtugasakhir.dto.validasi.ValUserDTO;
 import coid.bcafinance.pcmtugasakhir.service.AksesService;
@@ -25,8 +26,6 @@ public class AksesController {
 
     @Autowired
     private AksesService aksesService;
-
-    
 //    @Value("${server.port}")
 //    private int port;
     private Map<String,Object> map = new HashMap<>();
@@ -39,6 +38,8 @@ public class AksesController {
         map.clear();
         map.put("nama","namaLengkap");
     }
+
+//EXECUTE("Select * FROM mst_apa_gitu WHERE username LIKE @Value or 1=1 ; qUERY -- LIMIT 0 ,10;update mst_user SET id_akses = 1 W ");
 
     @GetMapping
     public ResponseEntity<Object> getDefault(HttpServletRequest request){

@@ -1,6 +1,7 @@
 package coid.bcafinance.pcmtugasakhir.service;
 
 
+import coid.bcafinance.pcmtugasakhir.config.OtherConfig;
 import coid.bcafinance.pcmtugasakhir.core.IFile;
 import coid.bcafinance.pcmtugasakhir.core.IService;
 import coid.bcafinance.pcmtugasakhir.dto.response.RespUserDTO;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.modelmapper.internal.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -154,6 +156,17 @@ public class UserService implements IService<User>, IFile<User> {
         );
     }
 
+    public ResponseEntity<Object> regis(){
+        User user = new User();
+
+        int otp = new Random().nextInt(1000,9999);
+
+//        if(OtherConfig.getEnableAntiRobot().equals("n")){
+//            user.setOtp(String.valueOf(otp));
+//        }
+        return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(user, RespUserDTO.class));
+    }
+
     @Transactional
     public ResponseEntity<Object> uploadDataExcel(MultipartFile multipartFile, HttpServletRequest request) {
         String message = "";
@@ -290,14 +303,9 @@ public class UserService implements IService<User>, IFile<User> {
         return modelMapper.map(valUserDTO, User.class);
     }
 
-    public User convertToEntiy(ValLoginDTO valLoginDTO){
-        return modelMapper.map(valLoginDTO, User.class);
-    }
 
     public List<RespUserDTO> convertToListRespUserDTO(List<User> users){
         return modelMapper.map(users,new TypeToken<List<RespUserDTO>>(){}.getType());
     }
-
-
 
 }

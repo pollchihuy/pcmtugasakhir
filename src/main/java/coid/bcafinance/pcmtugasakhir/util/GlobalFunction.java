@@ -1,5 +1,6 @@
 package coid.bcafinance.pcmtugasakhir.util;
 
+import coid.bcafinance.pcmtugasakhir.config.OtherConfig;
 import coid.bcafinance.pcmtugasakhir.dto.response.RespUserDTO;
 import coid.bcafinance.pcmtugasakhir.handler.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,12 @@ import java.util.*;
 
 public class GlobalFunction {
 
+
+    public static void println(Object obj){
+        if(OtherConfig.getEnablePrint().equals("y")){
+            System.out.println(obj);
+        }
+    }
 
     public static ResponseEntity<Object> dataBerhasilDisimpan(HttpServletRequest request){
         return new ResponseHandler().

@@ -43,13 +43,14 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         rand = new Random();
         dataGenerator = new DataGenerator();
         req = new JSONObject();
-        Optional<User> optionalUser= userRepo.findTopByOrderByIdDesc();
-        user = optionalUser.get();
+//        Optional<User> optionalUser= userRepo.findTopByOrderByIdDesc();
+//        user = optionalUser.get();
     }
 
     @Test(priority = 3)
     private void save(){
         req.put("username",dataGenerator.dataUsername());
+//        req.put("username","<script>alert('test');</script>");
         req.put("email",dataGenerator.dataEmail());
         req.put("no-hp",dataGenerator.dataNoHp());
         req.put("password",dataGenerator.dataPassword());
