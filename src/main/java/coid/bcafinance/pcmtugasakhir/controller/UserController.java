@@ -75,6 +75,7 @@ public class UserController {
 
     /** Usman Save */
     @PostMapping
+    @PreAuthorize("hasAuthority('USER-MAN')")
     public ResponseEntity<Object> save(@Valid @RequestBody ValUserDTO valUserDTO
     ,HttpServletRequest request){
         return userService.save(userService.convertToEntiy(valUserDTO),request);
@@ -82,6 +83,7 @@ public class UserController {
 
     /** Usman Update */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER-MAN')")
     public ResponseEntity<Object> update(
             @PathVariable(value = "id") Long aLong
             ,@Valid @RequestBody ValUserDTO valUserDTO
@@ -90,6 +92,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER-MAN')")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id, HttpServletRequest request){
         return userService.delete(id,request);
     }
@@ -121,6 +124,7 @@ public class UserController {
         return userService.findByParam(pageable,column,value,request);
     }
 
+    @PreAuthorize("hasAuthority('USER-MAN')")
     @PostMapping("/upload-sheet")
     public ResponseEntity<Object> uploadExcel(
             @RequestParam(value = "file") MultipartFile file,
@@ -130,6 +134,7 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasAuthority('USER-MAN')")
     @GetMapping("/download-sheet")
     public void downloadExcel(
             @RequestParam(value = "col") String column,
@@ -141,6 +146,7 @@ public class UserController {
         userService.downloadReportExcel(column,value,request,response);
     }
 
+    @PreAuthorize("hasAuthority('USER-MAN')")
     @GetMapping("/download-pdf")
     public void downloadPDF(
             @RequestParam(value = "col") String column,

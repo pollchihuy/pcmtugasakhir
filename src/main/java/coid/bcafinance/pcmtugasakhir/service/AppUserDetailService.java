@@ -15,14 +15,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -78,9 +77,13 @@ public class AppUserDetailService implements UserDetailsService {
 //            return null;
         }
         User userNext = opUser.get();
-
+//        String uName = s;
+//        String pwd = BcryptImpl.hash("ok");
+//        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         return new org.springframework.security.core.userdetails.
                 User(userNext.getUsername(),userNext.getPassword(),userNext.getAuthorities());
+//        return new org.springframework.security.core.userdetails.
+//                User(uName,pwd,grantedAuthorities);
     }
 
     public User convertToEntiy(ValLoginDTO valLoginDTO){

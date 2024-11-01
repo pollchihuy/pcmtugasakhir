@@ -5,6 +5,7 @@ import coid.bcafinance.pcmtugasakhir.model.Menu;
 import coid.bcafinance.pcmtugasakhir.repo.AksesRepo;
 import coid.bcafinance.pcmtugasakhir.repo.MenuRepo;
 import coid.bcafinance.pcmtugasakhir.utils.DataGenerator;
+import coid.bcafinance.pcmtugasakhir.utils.TokenGenerator;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -38,6 +38,8 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
     private JSONObject req;
     private Akses akses;
     private List<Menu> list;
+    private String token  ;
+
     @BeforeClass
     private void setUp(){
         RestAssured.baseURI = "http://localhost:8080";
@@ -47,6 +49,8 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
         Optional<Akses> optionalAkses= aksesRepo.findTopByOrderByIdDesc();
         akses = optionalAkses.get();
         list = menuRepo.findAll();
+        String token  = AuthControllerTest.AUTH_TOKEN;
+        token = new TokenGenerator(token).getToken();
     }
 
     @Test(priority = 3)
@@ -56,6 +60,7 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
+                header("Authorization",token).
                 body(req);
 
         String pathVariable = "/akses";
@@ -75,6 +80,7 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
+                header("Authorization",token).
                 body(req);
 
         String pathVariable = "/akses/"+akses.getId();
@@ -95,6 +101,7 @@ public class AksesControllerTest extends AbstractTestNGSpringContextTests {
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
+                header("Authorization",token).
                 body(req);
 
         String pathVariable = "/akses/"+akses.getId();

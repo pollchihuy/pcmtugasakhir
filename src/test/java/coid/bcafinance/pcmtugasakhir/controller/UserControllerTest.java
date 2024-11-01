@@ -5,6 +5,7 @@ import coid.bcafinance.pcmtugasakhir.model.User;
 import coid.bcafinance.pcmtugasakhir.repo.AksesRepo;
 import coid.bcafinance.pcmtugasakhir.repo.UserRepo;
 import coid.bcafinance.pcmtugasakhir.utils.DataGenerator;
+import coid.bcafinance.pcmtugasakhir.utils.TokenGenerator;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
@@ -36,6 +37,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
     private DataGenerator dataGenerator;
     private JSONObject req;
     private User user;
+    private String token  ;
 
     @BeforeClass
     private void setUp(){
@@ -43,6 +45,9 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         rand = new Random();
         dataGenerator = new DataGenerator();
         req = new JSONObject();
+        token  = AuthControllerTest.AUTH_TOKEN;
+        token = new TokenGenerator(token).getToken();
+        // fungsional cek token ? null atau tidak -> kalau null request kalau tidak estafet
 //        Optional<User> optionalUser= userRepo.findTopByOrderByIdDesc();
 //        user = optionalUser.get();
     }
@@ -64,6 +69,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
+                header("Authorization",token).
                 body(req);
 
         String pathVariable = "/user";
@@ -90,6 +96,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
                 header("Accept","*/*").
+                header("Authorization",token).
                 body(req);
 
         String pathVariable = "/user/"+user.getId();
@@ -104,6 +111,7 @@ public class UserControllerTest extends AbstractTestNGSpringContextTests {
     private void delete(){
         RequestSpecification httpRequest = given().
                 header("Content-Type","application/json").
+                header("Authorization",token).
                 header("Accept","*/*");
 
         String pathVariable = "/user/"+user.getId();

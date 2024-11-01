@@ -1,6 +1,5 @@
 package coid.bcafinance.pcmtugasakhir.security;
 
-
 import coid.bcafinance.pcmtugasakhir.service.AppUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

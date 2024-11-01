@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "MstUser")
@@ -52,8 +51,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Menu> lt = this.akses.getMenuList();
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Menu menu : lt) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(menu.getNama()));
+        }
 
-        return List.of();
+        return grantedAuthorities;
     }
 
     @Override
